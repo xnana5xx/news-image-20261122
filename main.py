@@ -28,6 +28,11 @@ def main():
         expected = fh.read()
     if not expected.startswith(b"\x89PNG\r\n\x1a\n"):
         raise SystemExit("committed image is not a whole PNG file")
+    # Read the IHDR dimensions: the gate caps the image at 1024x1024.
+    width = int.from_bytes(expected[16:20], "big")
+    height = int.from_bytes(expected[20:24], "big")
+    if width > 1024 or height > 1024:
+        raise SystemExit(f"committed image is {width}x{height}, over the 1024x1024 gate limit")
     if len(expected) > 1048576:
         raise SystemExit("committed image exceeds the 1 MiB gate limit")
     with open(target, "rb") as fh:

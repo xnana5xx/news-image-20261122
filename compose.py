@@ -57,7 +57,7 @@ def main():
 
     # Hero illustration band.
     hero = Image.open(HERO).convert("RGB")
-    hero = hero.resize((W - 56, 300))
+    hero = hero.resize((W - 56, 300), Image.LANCZOS)
     page.paste(hero, (28, 134))
     d.rectangle([28, 134, W - 28, 434], outline=NAVY, width=3)
 
